@@ -19,7 +19,7 @@ def createTable():
     return
 
 
-def selectAticle(a):
+def query(a):
 #Поиск статьи по автору
     conn = sqlite3.connect("Library.db")
     c = conn.cursor()
@@ -35,4 +35,4 @@ a = str(input())
 insertTable(r'C:\Users\Natalia Plotnikova\Downloads\re.txt')
 myre.Func(r'C:\Users\Natalia Plotnikova\Downloads\biblio.bib')
 #author ="Knobloch"
-selectAticle(a)
+query(a)
