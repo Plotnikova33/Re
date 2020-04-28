@@ -1,5 +1,4 @@
 import re
-reFunc(r'C:\Users\Natalia Plotnikova\Downloads\biblio.bib')
 
 def reFunc(dirFile):
     file = open(dirFile, 'r', encoding='utf-8').read().replace(' and ', ',').split('\n@')
@@ -98,3 +97,5 @@ def reConference(Attr):
                                                                    Attr.get('Booktitle'), Attr.get('Year')
                                                                    ))
     return
+    
+    reFunc(r'C:\Users\Natalia Plotnikova\Downloads\biblio.bib')
