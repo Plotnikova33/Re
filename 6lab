@@ -6,27 +6,20 @@ import re
 def createTable():
 # Создание БД и Таблицы   
     conn = sqlite3.connect("Library.db")
+    dir=r'C:\Users\Natalia Plotnikova\Downloads\parsing.txt'
     c = conn.cursor()
     c.execute('CREATE TABLE ARTICLE (id integer primary key autoincrement, title varchar(50), author varchar('
                 '50), journal varchar(50), year varchar(50), '
                 'pages varchar(50), volume varchar(50))')
+    DataList = [dir['Title'], dict_attr['Author'], dir['Journal'], dir['Year'], dir['Pages'],
+                dir['Volume']]
+    c.execute('INSERT INTO ARTICLE(title, author, journal, year, pages, volume) values(?, ?, ?, ?, ?, ?)', DataList)            
     conn.commit()
     conn.close()
     return
 
 
-def insertTable(dict_attr):
-#Берем из словаря атрибуты в список, который затем вставляем в список
-    conn = sqlite3.connect("Library.db")
-    c = conn.cursor()
-    DataList = [dict_attr['Title'], dict_attr['Author'], dict_attr['Journal'], dict_attr['Year'], dict_attr['Pages'],
-                dict_attr['Volume']]
-    c.execute('INSERT INTO ARTICLE(title, author, journal, year, pages, volume) values(?, ?, ?, ?, ?, ?)', DataList)
-    conn.commit()
-    return
-
-
-def selectAuthor(a):
+def selectAticle(a):
 #Поиск статьи по автору
     conn = sqlite3.connect("Library.db")
     c = conn.cursor()
@@ -40,6 +33,6 @@ print("Фамилия автора?")
 a = str(input())
 #createTable()
 insertTable(r'C:\Users\Natalia Plotnikova\Downloads\re.txt')
-re.Func(r'C:\Users\Natalia Plotnikova\Downloads\biblio.bib')
+myre.Func(r'C:\Users\Natalia Plotnikova\Downloads\biblio.bib')
 #author ="Knobloch"
-selectAuthor(a)
+selectAticle(a)
