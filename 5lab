@@ -1,0 +1,100 @@
+import re
+reFunc(r'C:\Users\Natalia Plotnikova\Downloads\biblio.bib')
+
+def reFunc(dirFile):
+    file = open(dirFile, 'r', encoding='utf-8').read().replace(' and ', ',').split('\n@')
+    for note in file:
+        Attr = reAttributes(note)
+        if note.startswith('Article'):
+            reArcticle(Attr)
+        if note.startswith('Book'):
+            reBook(Attr)
+        if note.startswith('Booklet'):
+            reBooklet(Attr)
+        if note.startswith('Conference'):
+            reConference(Attr)
+    return
+
+def reAttributes(bibTex):
+    Attr = dict.fromkeys(
+        ['Author', 'Journal', 'Pages',  'Title',  'Volume', 'Year', 'Language'])
+    # Основные атрибуты
+    author = re.search(r"\s*Author\s*=\s*{\s?(?P<author>\S.*\s?)}", bibTex)
+    if author:
+        Attr['Author'] = author.group('author')
+    journal = re.search(r"\s*Journal\s*=\s*{\s?(?P<journal>\S.*\s?)}", bibTex)
+    if journal:
+        Attr['Journal'] = journal.group('journal')
+    pages = re.search(r"\s*Pages\s*=\s*{\s?(?P<pages>\S.*\s?)}", bibTex)
+    if pages:
+        Attr['Pages'] = pages.group('pages')
+    title = re.search(r"\s*Title\s*=\s*{\s?(?P<title>\S.*\s?)}", bibTex)
+    if title:
+        Attr['Title'] = title.group('title')
+    volume = re.search(r"\s*Volume\s*=\s*{\s?(?P<volume>\S.*\s?)}", bibTex)
+    if volume:
+        Attr['Volume'] = volume.group('volume')
+    year = re.search(r"\s*Year\s*=\s*{\s?(?P<year>\S.*\s?)}", bibTex)
+    if year:
+        Attr['Year'] = year.group('year')
+    # Дополнительные атрибуты
+    language = re.search(r"\s*Language\s*=\s*{\s?(?P<language>\S.*\s?)}", bibTex)
+    if language is None:
+        Attr['Language'] = 'English'
+    else:
+        Attr['Language'] = language.group('language')
+    return Attr
+
+
+def reArcticle(Attr):
+    file = open(r'C:\Users\Natalia Plotnikova\Downloads\re.txt', 'a+', encoding='utf-8')
+    if str(Attr['Language']).startswith('russian'):
+        file.write('{0} {1} // {2}{3}. -Вып.{4}.-С{5}\n\n'.format(Attr.get('Author'), Attr.get('Title'),
+                                                                  Attr.get('Journal'), Attr.get('Year'),
+                                                                  Attr.get('Volume'), Attr.get('Pages')))
+    else:
+        file.write('{0} {1} // {2}{3}. -Vol.{4}.-P{5}.\n\n'.format(Attr.get('Author'), Attr.get('Title'),
+                                                                   Attr.get('Journal'), Attr.get('Year'),
+                                                                   Attr.get('Volume'), Attr.get('Pages')))
+    return
+
+
+def reBook(Attr):
+    file = open(r'C:\Users\Natalia Plotnikova\Downloads\re.txt', 'a+', encoding='utf-8')
+    if str(Attr['Language']).startswith('russian'):
+        file.write('{0} {1} // {2}{3}. -С{4}\n\n'.format(Attr.get('Author'), Attr.get('Title'),
+                                                                  Attr.get('Publisher'), Attr.get('Year'),
+                                                                  Attr.get('Numpages')))
+    else:
+        file.write('{0} {1} // {2}{3}. -P{4}.\n\n'.format(Attr.get('Author'), Attr.get('Title'),
+                                                                   Attr.get('Publisher'), Attr.get('Year'),
+                                                                   Attr.get('Numpages')))
+    return
+
+
+def reBooklet(Attr):
+    file = open(r'C:\Users\Natalia Plotnikova\Downloads\re.txt', 'a+', encoding='utf-8')
+    if str(Attr['Language']).startswith('russian'):
+        file.write('{0}:[Booklet].-{1} // {2},{3}. -{4} л.\n\n'.format(Attr.get('Title'), Attr.get('Note'),
+                                                                  Attr.get('Journal'), Attr.get('Year'),
+                                                                             Attr.get('Pages')))
+
+    else:
+        file.write('{0}:[Буклет].-{1} // {2},{3}. -{4} л.\n\n'.format(Attr.get('Title'), Attr.get('Note'),
+                                                                             Attr.get('Journal'),
+                                                                             Attr.get('Year'), Attr.get('Pages')))
+
+    return
+
+
+def reConference(Attr):
+    file = open(r'C:\Users\Natalia Plotnikova\Downloads\re.txt', 'a+', encoding='utf-8')
+    if str(Attr['Language']).startswith('russian'):
+        file.write('{0} {1} // {2}{3}.\n\n'.format(Attr.get('Author'), Attr.get('Title'),
+                                                                  Attr.get('Booktitle'), Attr.get('Year')
+                                                                ))
+    else:
+        file.write('{0} {1} // {2}{3}.\n\n'.format(Attr.get('Author'), Attr.get('Title'),
+                                                                   Attr.get('Booktitle'), Attr.get('Year')
+                                                                   ))
+    return
